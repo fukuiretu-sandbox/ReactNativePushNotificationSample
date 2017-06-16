@@ -11,6 +11,7 @@ import {
   Text,
   View,
   Button,
+  Alert,
 } from 'react-native';
 import PushNotification from 'react-native-push-notification';
 
@@ -19,7 +20,14 @@ export default class ReactNativePushNotificationSample extends Component {
     PushNotification.configure({
       // (required) Called when a remote or local notification is opened or received
       onNotification: function(notification) {
-        console.log( 'NOTIFICATION:', notification );
+        // console.log( 'NOTIFICATION:', notification );
+        Alert.alert(
+          notification.title,
+          notification.message,
+          [
+            {text: 'OK', onPress: () => console.log('OK Pressed')},
+          ]
+        )
       },
     });
   }
