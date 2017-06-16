@@ -9,43 +9,28 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Button,
 } from 'react-native';
 import PushNotification from 'react-native-push-notification';
 
 export default class ReactNativePushNotificationSample extends Component {
   componentDidMount() {
     PushNotification.configure({
-      // (optional) Called when Token is generated (iOS and Android)
-      onRegister: function(token) {
-          console.log( 'TOKEN:', token );
-      },
-
       // (required) Called when a remote or local notification is opened or received
       onNotification: function(notification) {
-          console.log( 'NOTIFICATION:', notification );
+        console.log( 'NOTIFICATION:', notification );
       },
+    });
+  }
 
-      // ANDROID ONLY: GCM Sender ID (optional - not required for local notifications, but is need to receive remote push notifications)
-      senderID: "YOUR GCM SENDER ID",
-
-      // IOS ONLY (optional): default: all - Permissions to register.
-      permissions: {
-          alert: true,
-          badge: true,
-          sound: true
-      },
-
-      // Should the initial notification be popped automatically
-      // default: true
-      popInitialNotification: true,
-
-      /**
-        * (optional) default: true
-        * - Specified if permissions (ios) and token (android and ios) will requested or not,
-        * - if not, you must call PushNotificationsHandler.requestPermissions() later
-        */
-      requestPermissions: true,
+  onLocalNotification(){
+    PushNotification.localNotificationSchedule({
+      foreground: true,
+      title: "title here",
+      message: "My Notification Message", // (required)
+      date: new Date(Date.now() + (3 * 1000)), // your required time
+      number: 0
     });
   }
 
@@ -62,6 +47,11 @@ export default class ReactNativePushNotificationSample extends Component {
           Press Cmd+R to reload,{'\n'}
           Cmd+D or shake for dev menu
         </Text>
+        <Button
+          onPress={this.onLocalNotification}
+          title="notification"
+          color="#841584"
+        />
       </View>
     );
   }
